@@ -27,8 +27,13 @@ class HeuristicSearcher {
 
 	T best() { return current_state; }
 	double bestCost() { return current_cost; }
+	void runOnce(void);
 
 	private:
 	T current_state;
 	double current_cost;
 };
+
+template <typename T>
+void HeuristicSearcher<T>::runOnce(void) {
+}
