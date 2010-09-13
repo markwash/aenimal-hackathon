@@ -13,20 +13,23 @@ class MockNeighborFactory: public NeighborFactory<int> {
 };
 
 struct F {
-	F() {
-		CostFunction<int> cost_function = MockCostFunction();
-		CostHeuristic cost_heuristic = MockCostHeuristic();
-		NeighborFactory<int> neighbor_factory = MockNeighborFactory();
-		int initial_state = 0;
+	CostFunction<int> cost_function;
+	CostHeuristic cost_heuristic;
+	NeighborFactory<int> neighbor_factory;
+	int initial_state;
 
-		HeuristicSearcher<int> searcher =
-			HeuristicSearcher<int>(cost_function, cost_heuristic,
-					       neighbor_factory, initial_state);
-	};
+	HeuristicSearcher<int> searcher;
+
+	F():
+		initial_state(0),
+		searcher(cost_function, cost_heuristic,
+			 neighbor_factory, initial_state)
+	{};
 	
 };
 
-BOOST_FIXTURE_TEST_CASE(null, F)
+BOOST_FIXTURE_TEST_CASE(initial_is_best_state, F)
 {
+	//BOOST_CHECK_EQUAL(searcher.best(), initial_state);
 }
 
