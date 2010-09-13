@@ -3,6 +3,9 @@
 #define BOOST_TEST_MODULE TestHeuristicSearcher
 #include <boost/test/unit_test.hpp>
 
+#include <map>
+using namespace std;
+
 class MockCostFunction: public CostFunction<int> {
 };
 
@@ -10,6 +13,16 @@ class MockCostHeuristic: public CostHeuristic {
 };
 
 class MockNeighborFactory: public NeighborFactory<int> {
+	public:
+	int addNeighbor(int state, int neighbor) {
+		neighbors[state] = neighbor;
+	}
+	int getNeighbor(int state) {
+		return neighbors[state];
+	}
+
+	private:
+	map<int, int> neighbors;
 };
 
 struct F {
