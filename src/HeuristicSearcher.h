@@ -9,9 +9,15 @@ class CostHeuristic
 };
 
 template <typename T>
+class NeighborFactory
+{
+};
+
+template <typename T>
 class HeuristicSearcher {
 	public:
 	HeuristicSearcher(const CostFunction<T> &cost_function,
-			  const CostHeuristic &heuristic)
+			  const CostHeuristic &heuristic,
+			  const NeighborFactory<T> &neighbor_factory)
 		{}
 };
