@@ -18,6 +18,7 @@ class HeuristicSearcher {
 	public:
 	HeuristicSearcher(const CostFunction<T> &cost_function,
 			  const CostHeuristic &heuristic,
-			  const NeighborFactory<T> &neighbor_factory)
+			  const NeighborFactory<T> &neighbor_factory,
+			  T initial_state)
 		{}
 };

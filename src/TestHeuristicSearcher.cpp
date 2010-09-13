@@ -17,9 +17,11 @@ struct F {
 		CostFunction<int> cost_function = MockCostFunction();
 		CostHeuristic cost_heuristic = MockCostHeuristic();
 		NeighborFactory<int> neighbor_factory = MockNeighborFactory();
+		int initial_state = 0;
+
 		HeuristicSearcher<int> searcher =
 			HeuristicSearcher<int>(cost_function, cost_heuristic,
-					       neighbor_factory);
+					       neighbor_factory, initial_state);
 	};
 	
 };
