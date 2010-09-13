@@ -6,12 +6,13 @@
 class MockCostFunction: public CostFunction<int> {
 };
 
-class MockCollation: public Collation<int> {
+class MockCostHeuristic: public CostHeuristic {
 };
 
 struct F {
 	F() {
 		CostFunction<int> cost_function = MockCostFunction();
+		CostHeuristic heuristic = MockCostHeuristic();
 		HeuristicSearcher<int> searcher =
 			HeuristicSearcher<int>(cost_function);
 	};

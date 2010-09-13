@@ -4,8 +4,7 @@ class CostFunction
 //	double getCost(T state) = 0;
 };
 
-template <typename T>
-class Collation
+class CostHeuristic
 {
 };
 
