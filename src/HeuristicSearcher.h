@@ -10,10 +10,8 @@ class CostHeuristic
 
 template <typename T>
 class HeuristicSearcher {
-	private:
-	const CostFunction<T> &cost_function;
 	public:
-	HeuristicSearcher(const CostFunction<T> &cost_function):
-		cost_function(cost_function)
+	HeuristicSearcher(const CostFunction<T> &cost_function,
+			  const CostHeuristic &heuristic)
 		{}
 };

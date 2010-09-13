@@ -12,9 +12,9 @@ class MockCostHeuristic: public CostHeuristic {
 struct F {
 	F() {
 		CostFunction<int> cost_function = MockCostFunction();
-		CostHeuristic heuristic = MockCostHeuristic();
+		CostHeuristic cost_heuristic = MockCostHeuristic();
 		HeuristicSearcher<int> searcher =
-			HeuristicSearcher<int>(cost_function);
+			HeuristicSearcher<int>(cost_function, cost_heuristic);
 	};
 	
 };
