@@ -5,6 +5,11 @@ class CostFunction
 };
 
 template <typename T>
+class Collation
+{
+};
+
+template <typename T>
 class HeuristicSearcher {
 	private:
 	const CostFunction<T> &cost_function;
