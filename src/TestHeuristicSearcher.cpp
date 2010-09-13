@@ -67,10 +67,10 @@ struct F {
 	
 };
 
-BOOST_FIXTURE_TEST_CASE(initial_is_best_state, F)
+BOOST_FIXTURE_TEST_CASE(initial_is_current_state, F)
 {
-	BOOST_CHECK_EQUAL(searcher.best(), initial_state);
-	BOOST_CHECK_EQUAL(searcher.bestCost(), initial_state_cost);
+	BOOST_CHECK_EQUAL(searcher.currentState(), initial_state);
+	BOOST_CHECK_EQUAL(searcher.currentCost(), initial_state_cost);
 }
 
 BOOST_FIXTURE_TEST_CASE(one_run_goes_to_next_state, F)
@@ -78,6 +78,6 @@ BOOST_FIXTURE_TEST_CASE(one_run_goes_to_next_state, F)
 	neighbor_factory.addNeighbor(0, 1);
 	cost_function.addCost(1, 8.0);
 	searcher.runOnce();
-	BOOST_CHECK_EQUAL(searcher.best(), 1);
-	BOOST_CHECK_EQUAL(searcher.bestCost(), 8.0);
+	BOOST_CHECK_EQUAL(searcher.currentState(), 1);
+	BOOST_CHECK_EQUAL(searcher.currentCost(), 8.0);
 }

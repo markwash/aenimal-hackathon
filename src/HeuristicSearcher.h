@@ -32,8 +32,8 @@ class HeuristicSearcher {
 		current_cost(cost_function.getCost(current_state))
 		{}
 
-	T best() { return current_state; }
-	double bestCost() { return current_cost; }
+	T currentState() { return current_state; }
+	double currentCost() { return current_cost; }
 	void runOnce(void);
 
 	private:
