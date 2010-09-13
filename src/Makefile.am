@@ -3,7 +3,8 @@ bin_PROGRAMS = \
 
 noinst_PROGRAMS = \
 	basictest \
-	TestAdder
+	TestAdder \
+	TestHeuristicSearcher
 
 helloworld_SOURCES = \
 	helloworld.cpp
@@ -17,3 +18,8 @@ TestAdder_SOURCES = \
 	TestAdder.cpp
 
 TestAdder_LDFLAGS = -lboost_unit_test_framework-mt
+
+TestHeuristicSearcher_SOURCES = \
+	TestHeuristicSearcher.cpp
+
+TestHeuristicSearcher_LDFLAGS = -lboost_unit_test_framework-mt
