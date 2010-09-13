@@ -3,7 +3,14 @@
 #define BOOST_TEST_MODULE TestHeuristicSearcher
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE(simple)
+struct F {
+	F() {
+		HeuristicSearcher searcher = HeuristicSearcher();
+	};
+	
+};
+
+BOOST_FIXTURE_TEST_CASE(null, F)
 {
-	HeuristicSearcher searcher = HeuristicSearcher();
+	
 }
