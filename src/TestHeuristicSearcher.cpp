@@ -7,6 +7,16 @@
 using namespace std;
 
 class MockCostFunction: public CostFunction<int> {
+	public:
+	void addCost(int state, double cost) {
+		costs[state] = cost;
+	}
+	double getCost(int state) {
+		return costs[state];
+	}
+
+	private:
+	map<int, double> costs;
 };
 
 class MockCostHeuristic: public CostHeuristic {
@@ -14,7 +24,7 @@ class MockCostHeuristic: public CostHeuristic {
 
 class MockNeighborFactory: public NeighborFactory<int> {
 	public:
-	int addNeighbor(int state, int neighbor) {
+	void addNeighbor(int state, int neighbor) {
 		neighbors[state] = neighbor;
 	}
 	int getNeighbor(int state) {
