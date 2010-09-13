@@ -46,3 +46,7 @@ BOOST_FIXTURE_TEST_CASE(initial_is_best_state, F)
 	BOOST_CHECK_EQUAL(searcher.best(), initial_state);
 }
 
+BOOST_FIXTURE_TEST_CASE(one_run_goes_to_next_state, F)
+{
+	
+}
