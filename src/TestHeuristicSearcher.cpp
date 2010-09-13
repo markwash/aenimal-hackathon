@@ -8,6 +8,9 @@ using namespace std;
 
 class MockCostFunction: public CostFunction<int> {
 	public:
+	MockCostFunction(int initial_state, double initial_state_cost) {
+		costs[initial_state] = initial_state_cost;
+	}
 	void addCost(int state, double cost) {
 		costs[state] = cost;
 	}
@@ -21,6 +24,7 @@ class MockCostFunction: public CostFunction<int> {
 
 class MockCostHeuristic: public CostHeuristic {
 	public:
+	MockCostHeuristic(): response(1) {}
 	void setCannedResponse(int response) {
 		this->response = response;
 	}
@@ -45,15 +49,18 @@ class MockNeighborFactory: public NeighborFactory<int> {
 };
 
 struct F {
-	CostFunction<int> cost_function;
-	CostHeuristic cost_heuristic;
-	NeighborFactory<int> neighbor_factory;
+	MockCostFunction cost_function;
+	MockCostHeuristic cost_heuristic;
+	MockNeighborFactory neighbor_factory;
 	int initial_state;
+	double initial_state_cost;
 
 	HeuristicSearcher<int> searcher;
 
 	F():
 		initial_state(0),
+		initial_state_cost(10.0),
+		cost_function(initial_state, initial_state_cost),
 		searcher(cost_function, cost_heuristic,
 			 neighbor_factory, initial_state)
 	{};
@@ -63,6 +70,7 @@ struct F {
 BOOST_FIXTURE_TEST_CASE(initial_is_best_state, F)
 {
 	BOOST_CHECK_EQUAL(searcher.best(), initial_state);
+	//BOOST_CHECK_EQUAL(searcher.bestCost(), 10.0);
 }
 
 BOOST_FIXTURE_TEST_CASE(one_run_goes_to_next_state, F)
