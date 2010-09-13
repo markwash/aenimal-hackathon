@@ -6,4 +6,5 @@
 BOOST_AUTO_TEST_CASE ( empty )
 {
 	Adder adder = Adder();
+	BOOST_CHECK_EQUAL( adder.add(2, 3), 5);
 }
