@@ -1,3 +1,4 @@
+#include <Adder.h>
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE TestAdder
 #include <boost/test/unit_test.hpp>
