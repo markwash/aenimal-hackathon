@@ -20,6 +20,15 @@ class MockCostFunction: public CostFunction<int> {
 };
 
 class MockCostHeuristic: public CostHeuristic {
+	public:
+	void setCannedResponse(int response) {
+		this->response = response;
+	}
+	int compare(double cost1, double cost2) {
+		return response;
+	}
+	private:
+	int response;
 };
 
 class MockNeighborFactory: public NeighborFactory<int> {
