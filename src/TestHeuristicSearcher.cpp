@@ -28,7 +28,7 @@ class MockCostHeuristic: public CostHeuristic {
 	void setCannedResponse(int response) {
 		this->response = response;
 	}
-	int compare(double cost1, double cost2) {
+	int compare(double cost1, double cost2) const {
 		return response;
 	}
 	private:
@@ -40,8 +40,8 @@ class MockNeighborFactory: public NeighborFactory<int> {
 	void addNeighbor(int state, int neighbor) {
 		neighbors[state] = neighbor;
 	}
-	int getNeighbor(int state) {
-		return neighbors[state];
+	int getNeighbor(int state) const {
+		return neighbors.find(state)->second;
 	}
 
 	private:
