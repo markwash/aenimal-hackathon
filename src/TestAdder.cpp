@@ -5,4 +5,5 @@
 
 BOOST_AUTO_TEST_CASE ( empty )
 {
+	Adder adder = Adder();
 }
