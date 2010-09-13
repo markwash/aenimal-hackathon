@@ -1,7 +1,8 @@
 template <typename T>
 class CostFunction
 {
-//	double getCost(T state) = 0;
+	public:
+	virtual double getCost(T state) const = 0;
 };
 
 class CostHeuristic
@@ -20,11 +21,14 @@ class HeuristicSearcher {
 			  const CostHeuristic &heuristic,
 			  const NeighborFactory<T> &neighbor_factory,
 			  T initial_state):
-		current_state(initial_state)
+		current_state(initial_state),
+		current_cost(cost_function.getCost(current_state))
 		{}
 
 	T best() { return current_state; }
+	double bestCost() { return current_cost; }
 
 	private:
 	T current_state;
+	double current_cost;
 };

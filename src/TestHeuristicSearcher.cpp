@@ -14,8 +14,8 @@ class MockCostFunction: public CostFunction<int> {
 	void addCost(int state, double cost) {
 		costs[state] = cost;
 	}
-	double getCost(int state) {
-		return costs[state];
+	double getCost(int state) const {
+		return costs.find(state)->second;
 	}
 
 	private:
@@ -70,7 +70,7 @@ struct F {
 BOOST_FIXTURE_TEST_CASE(initial_is_best_state, F)
 {
 	BOOST_CHECK_EQUAL(searcher.best(), initial_state);
-	//BOOST_CHECK_EQUAL(searcher.bestCost(), 10.0);
+	BOOST_CHECK_EQUAL(searcher.bestCost(), initial_state_cost);
 }
 
 BOOST_FIXTURE_TEST_CASE(one_run_goes_to_next_state, F)
