@@ -60,7 +60,7 @@ struct F {
 	F():
 		initial_state(0),
 		initial_state_cost(10.0),
-		cost_function(initial_state, initial_state_cost),
+		cost_function(0, 10.0),
 		searcher(cost_function, cost_heuristic,
 			 neighbor_factory, initial_state)
 	{};
