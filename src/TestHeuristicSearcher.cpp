@@ -30,6 +30,6 @@ struct F {
 
 BOOST_FIXTURE_TEST_CASE(initial_is_best_state, F)
 {
-	//BOOST_CHECK_EQUAL(searcher.best(), initial_state);
+	BOOST_CHECK_EQUAL(searcher.best(), initial_state);
 }
 
