@@ -50,3 +50,13 @@ BOOST_FIXTURE_TEST_CASE(always_prefer_higher_cost_if_rand_0, F)
 	rand.canned_response = 0.0;
 	BOOST_CHECK_EQUAL(heuristic.compare(100.0, 200.0), 1);
 }
+
+BOOST_FIXTURE_TEST_CASE(sometimes_prefer_higher_cost_if_rand_05, F)
+{
+	rand.canned_response = 0.5;
+	// C2 - C1 <=> T * log(0.5) ~ 6.93
+	for (int i = 1; i < 7; i++) 
+		BOOST_CHECK_EQUAL(heuristic.compare(0.0, 1.0 * i), 1);
+	for (int i = 7; i < 10; i++)
+		BOOST_CHECK_EQUAL(heuristic.compare(0.0, 1.0 * i), -1);
+}
