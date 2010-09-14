@@ -23,3 +23,12 @@ BOOST_FIXTURE_TEST_CASE(call_comparison, F)
 {
 	int choice = heuristic.compare(10.0, 20.0);
 }
+
+BOOST_FIXTURE_TEST_CASE(always_prefer_lower_cost, F)
+{
+	double cost;
+	for (int i = 0; i < 10000; i++) {
+		cost = 100.0 - 1.0 / i;
+		BOOST_CHECK_EQUAL(heuristic.compare(100.0, cost), 1);
+	}
+}
