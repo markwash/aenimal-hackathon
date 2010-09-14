@@ -1,7 +1,7 @@
 class SimulatedAnnealingHeuristic {
 	public:
-	SimulatedAnnealingHeuristic():
-		temperature(1.0)
+	SimulatedAnnealingHeuristic(double temperature):
+		temperature(temperature)
 		{}
 
 	double getTemp(void) { return temperature; }
