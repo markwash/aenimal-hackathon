@@ -1,13 +1,13 @@
 noinst_PROGRAMS = \
 	TestHeuristicSearcher \
-	TestMonteCarloHeuristic
+	TestSimulatedAnnealingHeuristic
 
 TestHeuristicSearcher_SOURCES = \
 	TestHeuristicSearcher.cpp
 
 TestHeuristicSearcher_LDFLAGS = -lboost_unit_test_framework-mt
 
-TestMonteCarloHeuristic_SOURCES = \
-	TestMonteCarloHeuristic.cpp
+TestSimulatedAnnealingHeuristic_SOURCES = \
+	TestSimulatedAnnealingHeuristic.cpp
 
-TestMonteCarloHeuristic_LDFLAGS = -lboost_unit_test_framework-mt
+TestSimulatedAnnealingHeuristic_LDFLAGS = -lboost_unit_test_framework-mt

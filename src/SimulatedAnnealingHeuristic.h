@@ -1,6 +1,6 @@
-class MonteCarloHeuristic {
+class SimulatedAnnealingHeuristic {
 	public:
-	MonteCarloHeuristic():
+	SimulatedAnnealingHeuristic():
 		temperature(1.0)
 		{}
 
