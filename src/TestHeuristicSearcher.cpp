@@ -104,3 +104,31 @@ BOOST_FIXTURE_TEST_CASE(dont_go_if_heuristic_says_no, F)
 	BOOST_CHECK_EQUAL(searcher.currentState(), 0);
 	BOOST_CHECK_EQUAL(searcher.currentCost(), 10.0);
 }
+
+BOOST_FIXTURE_TEST_CASE(initial_is_best_if_no_runs, F)
+{
+	BOOST_CHECK_EQUAL(searcher.bestState(), 0);
+	BOOST_CHECK_EQUAL(searcher.bestCost(), 10.0);
+}
+
+BOOST_FIXTURE_TEST_CASE(save_best_state1, F)
+{
+	neighbor_factory.addNeighbor(0, 1);
+	cost_function.addCost(1, 11.0);
+	searcher.runOnce();
+	BOOST_CHECK_EQUAL(searcher.currentState(), 1);
+	BOOST_CHECK_EQUAL(searcher.currentCost(), 11.0);
+	BOOST_CHECK_EQUAL(searcher.bestState(), 0);
+	BOOST_CHECK_EQUAL(searcher.bestCost(), 10.0);
+}
+
+BOOST_FIXTURE_TEST_CASE(save_best_state2, F)
+{
+	neighbor_factory.addNeighbor(0, 1);
+	cost_function.addCost(1, 1.0);
+	searcher.runOnce();
+	BOOST_CHECK_EQUAL(searcher.currentState(), 1);
+	BOOST_CHECK_EQUAL(searcher.currentCost(), 1.0);
+	BOOST_CHECK_EQUAL(searcher.bestState(), 1);
+	BOOST_CHECK_EQUAL(searcher.bestCost(), 1.0);
+}
