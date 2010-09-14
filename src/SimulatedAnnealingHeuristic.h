@@ -1,3 +1,6 @@
+#ifndef SIMULATEDANNEALINGHEURISTIC_H
+#define SIMULATEDANNEALINGHEURISTIC_H
+
 #include "CostHeuristic.h"
 #include <cmath>
 
@@ -28,3 +31,4 @@ int SimulatedAnnealingHeuristic<RNG>::compare(double cost1, double cost2) const 
 	else
 		return -1;
 }
+#endif

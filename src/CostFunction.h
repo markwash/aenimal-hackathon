@@ -1,3 +1,6 @@
+#ifndef COSTFUNCTION_H
+#define COSTFUNCTION_H
+
 template <typename T>
 class CostFunction
 {
@@ -5,3 +8,4 @@ class CostFunction
 	virtual double getCost(T state) const = 0;
 };
 
+#endif

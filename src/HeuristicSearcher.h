@@ -1,3 +1,6 @@
+#ifndef HEURISTICSEARHER_H
+#define HEURISTICSEARHER_H
+
 #include "CostFunction.h"
 #include "CostHeuristic.h"
 #include "NeighborFactory.h"
@@ -57,3 +60,5 @@ void HeuristicSearcher<T>::saveCurrentIfBest(void) {
 		best_cost = current_cost;
 	}
 }
+
+#endif

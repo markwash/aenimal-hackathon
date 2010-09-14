@@ -1,3 +1,6 @@
+#ifndef NEIGHBORFACTORY_H
+#define NEIGHBORFACTORY_H
+
 template <typename T>
 class NeighborFactory
 {
@@ -5,3 +8,4 @@ class NeighborFactory
 	virtual T getNeighbor(T state) const = 0;
 };
 
+#endif
