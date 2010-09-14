@@ -3,9 +3,16 @@
 #define BOOST_TEST_MODULE TestSimulatedAnnealingHeuristic
 #include <boost/test/unit_test.hpp>
 
+struct FakeRand
+{
+	double canned_response;
+	double operator()() { return canned_response; }
+};
+
 struct F {
-	F(): heuristic(10.0) {}
-	SimulatedAnnealingHeuristic heuristic;
+	F(): heuristic(rand, 10.0) {}
+	FakeRand rand;
+	SimulatedAnnealingHeuristic<FakeRand> heuristic;
 };
 
 BOOST_FIXTURE_TEST_CASE(get_temperature, F)
@@ -26,9 +33,8 @@ BOOST_FIXTURE_TEST_CASE(call_comparison, F)
 
 BOOST_FIXTURE_TEST_CASE(always_prefer_lower_cost, F)
 {
-	double cost;
-	for (int i = 0; i < 10000; i++) {
-		cost = 100.0 - 1.0 / i;
-		BOOST_CHECK_EQUAL(heuristic.compare(100.0, cost), 1);
+	for (int i = 0; i < 1000; i++) {
+		rand.canned_response = 1.0 * i / 1000.0;
+		BOOST_CHECK_EQUAL(heuristic.compare(100.0, 99.0), 1);
 	}
 }

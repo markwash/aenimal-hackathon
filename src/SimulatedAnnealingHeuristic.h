@@ -1,8 +1,9 @@
 #include "CostHeuristic.h"
 
+template <class Generator>
 class SimulatedAnnealingHeuristic: public CostHeuristic {
 	public:
-	SimulatedAnnealingHeuristic(double temperature):
+	SimulatedAnnealingHeuristic(Generator gen, double temperature):
 		temperature(temperature)
 		{}
 
