@@ -1,22 +1,6 @@
-template <typename T>
-class CostFunction
-{
-	public:
-	virtual double getCost(T state) const = 0;
-};
-
-class CostHeuristic
-{
-	public:
-	virtual int compare(double cost1, double cost2) const = 0;
-};
-
-template <typename T>
-class NeighborFactory
-{
-	public:
-	virtual T getNeighbor(T state) const = 0;
-};
+#include "CostFunction.h"
+#include "CostHeuristic.h"
+#include "NeighborFactory.h"
 
 template <typename T>
 class HeuristicSearcher {	
