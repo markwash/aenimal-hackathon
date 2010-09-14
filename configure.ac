@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.64])
 AC_INIT([hackathon], [0.0], [mwashenb@gmail.com])
-AC_CONFIG_SRCDIR([src/helloworld.cpp])
+AC_CONFIG_SRCDIR([src/])
 AC_CONFIG_HEADERS([config.h])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
