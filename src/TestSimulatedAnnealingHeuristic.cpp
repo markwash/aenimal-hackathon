@@ -38,3 +38,9 @@ BOOST_FIXTURE_TEST_CASE(always_prefer_lower_cost, F)
 		BOOST_CHECK_EQUAL(heuristic.compare(100.0, 99.0), 1);
 	}
 }
+
+BOOST_FIXTURE_TEST_CASE(never_prefer_higher_cost_if_rand_1, F)
+{
+	rand.canned_response = 1.0;
+	BOOST_CHECK_EQUAL(heuristic.compare(100.0, 101.0), -1);
+}
