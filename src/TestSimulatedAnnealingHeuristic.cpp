@@ -18,3 +18,8 @@ BOOST_FIXTURE_TEST_CASE(set_temperature, F)
 	heuristic.setTemp(100.0);
 	BOOST_CHECK_EQUAL(heuristic.getTemp(), 100.0);
 }
+
+BOOST_FIXTURE_TEST_CASE(call_comparison, F)
+{
+	int choice = heuristic.compare(10.0, 20.0);
+}
