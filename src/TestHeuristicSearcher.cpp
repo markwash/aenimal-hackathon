@@ -81,3 +81,15 @@ BOOST_FIXTURE_TEST_CASE(one_run_goes_to_next_state, F)
 	BOOST_CHECK_EQUAL(searcher.currentState(), 1);
 	BOOST_CHECK_EQUAL(searcher.currentCost(), 8.0);
 }
+
+BOOST_FIXTURE_TEST_CASE(ten_runs, F)
+{
+	for (int i = 0; i < 10; i++) {
+		neighbor_factory.addNeighbor(i, i + 1);
+		cost_function.addCost(i + 1, 1.0 * (i + 1));
+	}
+	for (int i = 0; i < 10; i++) 
+		searcher.runOnce();
+	BOOST_CHECK_EQUAL(searcher.currentState(), 10);
+	BOOST_CHECK_EQUAL(searcher.currentCost(), 10.0);
+}
