@@ -5,6 +5,7 @@ class SimulatedAnnealingHeuristic {
 		{}
 
 	double getTemp(void) { return temperature; }
+	void setTemp(double temperature) { this->temperature = temperature; }
 
 	private:
 	double temperature;

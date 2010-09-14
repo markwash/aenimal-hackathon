@@ -12,3 +12,9 @@ BOOST_FIXTURE_TEST_CASE(get_temperature, F)
 {
 	BOOST_CHECK_EQUAL(heuristic.getTemp(), 10.0);
 }
+
+BOOST_FIXTURE_TEST_CASE(set_temperature, F)
+{
+	heuristic.setTemp(100.0);
+	BOOST_CHECK_EQUAL(heuristic.getTemp(), 100.0);
+}
