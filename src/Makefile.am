@@ -1,6 +1,7 @@
 noinst_PROGRAMS = \
 	TestHeuristicSearcher \
-	TestSimulatedAnnealingHeuristic
+	TestSimulatedAnnealingHeuristic \
+	TestIntegration
 
 TestHeuristicSearcher_SOURCES = \
 	TestHeuristicSearcher.cpp
@@ -11,3 +12,8 @@ TestSimulatedAnnealingHeuristic_SOURCES = \
 	TestSimulatedAnnealingHeuristic.cpp
 
 TestSimulatedAnnealingHeuristic_LDFLAGS = -lboost_unit_test_framework-mt
+
+TestIntegration_SOURCES = \
+	TestIntegration.cpp
+
+TestIntegration_LDFLAGS = -lboost_unit_test_framework-mt
