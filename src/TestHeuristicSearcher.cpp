@@ -86,10 +86,21 @@ BOOST_FIXTURE_TEST_CASE(ten_runs, F)
 {
 	for (int i = 0; i < 10; i++) {
 		neighbor_factory.addNeighbor(i, i + 1);
-		cost_function.addCost(i + 1, 1.0 * (i + 1));
+		cost_function.addCost(i + 1, 1.0 * (i + 2));
 	}
 	for (int i = 0; i < 10; i++) 
 		searcher.runOnce();
 	BOOST_CHECK_EQUAL(searcher.currentState(), 10);
+	BOOST_CHECK_EQUAL(searcher.currentCost(), 11.0);
+}
+
+
+BOOST_FIXTURE_TEST_CASE(dont_go_if_heuristic_says_no, F)
+{
+	neighbor_factory.addNeighbor(0, 1);
+	cost_function.addCost(1, 0.0);
+	cost_heuristic.setCannedResponse(-1);
+	searcher.runOnce();
+	BOOST_CHECK_EQUAL(searcher.currentState(), 0);
 	BOOST_CHECK_EQUAL(searcher.currentCost(), 10.0);
 }
