@@ -23,6 +23,9 @@ class CircleImage {
 	int count(void) const { return circles.size(); }
 	Circle &get(int i) { return circles[i]; }
 
+	int getWidth(void) const { return width; }
+	int getHeight(void) const { return height; }
+
 	Image draw(void) const;
 
 	private:
