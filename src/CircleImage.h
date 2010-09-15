@@ -26,25 +26,25 @@ class CircleImage {
 	Image draw(void) const;
 
 	private:
-	list<Drawable> buildDrawList(void);
+	list<Drawable> buildDrawList(void) const;
 
 	int width, height;
 	vector<Circle> circles;
 };
 
-Image CircleImage::draw(void) {
+Image CircleImage::draw(void) const {
 	Image image(Geometry(width, height), Color("white"));
 	image.strokeWidth(0);
 	image.draw(buildDrawList());
 }
 
-list<Drawable> CircleImage::buildDrawList(void) {
+list<Drawable> CircleImage::buildDrawList(void) const {
 	list<Drawable> draw_list;
 	Circle circle;
 	for (int i = 0; i < circles.size(); i++) {
 		circle = circles[i];
-		ColorRGB = ColorRGB(circle.red, circle.blue, circle.green);
-		draw_list.push_back(DrawableFillColor(ColorRGB));
+		ColorRGB color = ColorRGB(circle.red, circle.blue, circle.green);
+		draw_list.push_back(DrawableFillColor(color));
 		draw_list.push_back(
 			DrawableCircle(circle.x, circle.y,
 				       circle.x, circle.y + circle.radius));
