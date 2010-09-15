@@ -5,6 +5,7 @@ noinst_PROGRAMS = \
 	TestSimulatedAnnealingHeuristic \
 	TestIntegration \
 	magick \
+	runci \
 	TestCircleImage \
 	TestCircleImageNeighborFactory
 
@@ -27,6 +28,11 @@ magick_SOURCES = \
 	magick.cpp
 
 magick_LDADD = $(GRAPHICSMAGICK_LIBS)
+
+runci_SOURCES = \
+	runci.cpp
+
+runci_LDADD = $(GRAPHICSMAGICK_LIBS)
 
 TestCircleImage_SOURCES = \
 	TestCircleImage.cpp
