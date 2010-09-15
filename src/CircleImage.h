@@ -39,12 +39,13 @@ Image CircleImage::draw(void) const {
 	Image image(Geometry(width, height), Color("white"));
 	image.strokeWidth(0);
 	image.draw(buildDrawList());
+	return image;
 }
 
 list<Drawable> CircleImage::buildDrawList(void) const {
 	list<Drawable> draw_list;
 	Circle circle;
-	for (int i = 0; i < circles.size(); i++) {
+	for (unsigned int i = 0; i < circles.size(); i++) {
 		circle = circles[i];
 		ColorRGB color = ColorRGB(circle.red, circle.blue, circle.green);
 		draw_list.push_back(DrawableFillColor(color));
