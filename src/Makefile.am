@@ -1,7 +1,8 @@
 noinst_PROGRAMS = \
 	TestHeuristicSearcher \
 	TestSimulatedAnnealingHeuristic \
-	TestIntegration
+	TestIntegration 
+#	TestCircleImage
 
 TestHeuristicSearcher_SOURCES = \
 	TestHeuristicSearcher.cpp
@@ -17,3 +18,8 @@ TestIntegration_SOURCES = \
 	TestIntegration.cpp
 
 TestIntegration_LDFLAGS = -lboost_unit_test_framework-mt
+
+#TestCircleImage_SOURCES = \
+#	TestCircleImage.cpp
+
+#TestCircleImage_LDFLAGS = -lboost_unit_test_framework-mt
