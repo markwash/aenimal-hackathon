@@ -40,7 +40,7 @@ class MockNeighborFactory: public NeighborFactory<int> {
 	void addNeighbor(int state, int neighbor) {
 		neighbors[state] = neighbor;
 	}
-	int getNeighbor(int state) const {
+	int getNeighbor(int &state) const {
 		return neighbors.find(state)->second;
 	}
 
