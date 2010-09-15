@@ -5,7 +5,8 @@ noinst_PROGRAMS = \
 	TestSimulatedAnnealingHeuristic \
 	TestIntegration \
 	magick \
-	TestCircleImage
+	TestCircleImage \
+	TestCircleImageNeighborFactory
 
 TestHeuristicSearcher_SOURCES = \
 	TestHeuristicSearcher.cpp
@@ -32,3 +33,9 @@ TestCircleImage_SOURCES = \
 
 TestCircleImage_LDFLAGS = -lboost_unit_test_framework-mt
 TestCircleImage_LDADD = $(GRAPHICSMAGICK_LIBS)
+
+TestCircleImageNeighborFactory_SOURCES = \
+	TestCircleImageNeighborFactory.cpp
+
+TestCircleImageNeighborFactory_LDFLAGS = -lboost_unit_test_framework-mt
+TestCircleImageNeighborFactory_LDADD = $(GRAPHICSMAGICK_LIBS)
