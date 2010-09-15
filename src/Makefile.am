@@ -1,8 +1,11 @@
+AM_CPPFLAGS = $(GRAPHICSMAGICK_CFLAGS)
+
 noinst_PROGRAMS = \
 	TestHeuristicSearcher \
 	TestSimulatedAnnealingHeuristic \
-	TestIntegration 
-#	TestCircleImage
+	TestIntegration \
+	magick \
+	TestCircleImage
 
 TestHeuristicSearcher_SOURCES = \
 	TestHeuristicSearcher.cpp
@@ -19,7 +22,13 @@ TestIntegration_SOURCES = \
 
 TestIntegration_LDFLAGS = -lboost_unit_test_framework-mt
 
-#TestCircleImage_SOURCES = \
-#	TestCircleImage.cpp
+magick_SOURCES = \
+	magick.cpp
 
-#TestCircleImage_LDFLAGS = -lboost_unit_test_framework-mt
+magick_LDADD = $(GRAPHICSMAGICK_LIBS)
+
+TestCircleImage_SOURCES = \
+	TestCircleImage.cpp
+
+TestCircleImage_LDFLAGS = -lboost_unit_test_framework-mt
+TestCircleImage_LDADD = $(GRAPHICSMAGICK_LIBS)

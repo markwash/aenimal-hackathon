@@ -12,6 +12,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CXX
 
 # Checks for libraries.
+PKG_CHECK_MODULES([GRAPHICSMAGICK], [GraphicsMagick++])
 
 # Checks for header files.
 
