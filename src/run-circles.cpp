@@ -69,8 +69,13 @@ int main(int argc, char **argv)
 						neighbor_factory, circles);
 
 	for (int i = 0; i < config.iterations; i++) {
+		if (i % 25 == 0) {
+			cout << "\r";
+			cout << 100.0 * i / config.iterations << "%" << flush;
+		}
 		searcher.runOnce();
 	}
+	cout << "\r" << flush;
 
 	circles = searcher.bestState();
 	Image image = circles.draw();
