@@ -8,6 +8,7 @@ noinst_PROGRAMS = \
 	magick \
 	runci \
 	run-circles \
+	display \
 	TestCircleImage \
 	TestCircleImageNeighborFactory \
 	TestImageDrawerCostFunction
@@ -46,6 +47,11 @@ run_circles_SOURCES = \
 	run-circles.cpp
 
 run_circles_LDADD = $(GRAPHICSMAGICK_LIBS)
+
+display_SOURCES = \
+	display.cpp
+
+display_LDADD = $(GRAPHICSMAGICK_LIBS)
 
 TestCircleImage_SOURCES = \
 	TestCircleImage.cpp
