@@ -14,7 +14,7 @@ class MockCostFunction: public CostFunction<int> {
 	void addCost(int state, double cost) {
 		costs[state] = cost;
 	}
-	double getCost(int state) const {
+	double getCost(int &state) const {
 		return costs.find(state)->second;
 	}
 
