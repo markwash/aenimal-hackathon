@@ -3,6 +3,7 @@ AM_CPPFLAGS = $(GRAPHICSMAGICK_CFLAGS)
 noinst_PROGRAMS = \
 	TestHeuristicSearcher \
 	TestSimulatedAnnealingHeuristic \
+	TestGreedyHeuristic \
 	TestIntegration \
 	magick \
 	runci \
@@ -19,6 +20,11 @@ TestSimulatedAnnealingHeuristic_SOURCES = \
 	TestSimulatedAnnealingHeuristic.cpp
 
 TestSimulatedAnnealingHeuristic_LDFLAGS = -lboost_unit_test_framework-mt
+
+TestGreedyHeuristic_SOURCES = \
+	TestGreedyHeuristic.cpp
+
+TestGreedyHeuristic_LDFLAGS = -lboost_unit_test_framework-mt
 
 TestIntegration_SOURCES = \
 	TestIntegration.cpp

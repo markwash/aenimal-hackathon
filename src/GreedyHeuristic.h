@@ -1,0 +1,6 @@
+#ifndef GREEDYHEURISTIC_H
+#define GREEDYHEURISTIC_H
+
+
+
+#endif
