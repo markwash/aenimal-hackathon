@@ -1,6 +1,7 @@
 #include <boost/random.hpp>
 #include <Magick++.h>
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 using namespace boost;
@@ -21,7 +22,7 @@ rng uni(generator, uni_dist);
 class Config {
 	public:
 	char *image_file_input;
-	char *image_file_output;
+	int iterations;
 	bool data_input_given;
 	char *data_file_input;
 	char *data_file_output;
@@ -31,13 +32,13 @@ Config parse_args(int argc, char **argv)
 {
 	if (argc != 4 && argc != 5) {
 		cerr << "Usage: " << argv[0];
-		cerr << " <image file> <image output> <data out> [<data in>]";
+		cerr << " <image file> <iterations> <data out> [<data in>]";
 		cerr << endl;
 		exit(2);
 	}
 	Config config;
 	config.image_file_input = argv[1];
-	config.image_file_output = argv[2];
+	config.iterations = atoi(argv[2]);
 	config.data_file_output = argv[3];
 	if (argc == 4) {
 		config.data_input_given = false;
@@ -64,14 +65,12 @@ int main(int argc, char **argv)
 	HeuristicSearcher<CircleImage> searcher(cost_function, heuristic,
 						neighbor_factory, circles);
 
-	for (int i = 0; i < 5000; i++) {
-		cout << i << endl;
+	for (int i = 0; i < config.iterations; i++) {
 		searcher.runOnce();
 	}
 
 	circles = searcher.bestState();
 	Image image = circles.draw();
-	image.write(config.image_file_output);
 	circles.save(config.data_file_output);
 	image.display();
 
