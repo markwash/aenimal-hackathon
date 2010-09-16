@@ -10,6 +10,7 @@ using namespace Magick;
 #include "ImageDrawerCostFunction.h"
 #include "CircleImageNeighborFactory.h"
 #include "GreedyHeuristic.h"
+#include "SimulatedAnnealingHeuristic.h"
 #include "HeuristicSearcher.h"
 
 typedef mt19937 generator_type;
@@ -23,6 +24,7 @@ class Config {
 	public:
 	char *image_file_input;
 	int iterations;
+	double temperature;
 	bool data_input_given;
 	char *data_file_input;
 	char *data_file_output;
@@ -30,21 +32,22 @@ class Config {
 
 Config parse_args(int argc, char **argv)
 {
-	if (argc != 4 && argc != 5) {
+	if (argc != 5 && argc != 6) {
 		cerr << "Usage: " << argv[0];
-		cerr << " <image file> <iterations> <data out> [<data in>]";
+		cerr << " <image file> <iterations> <temp> <data out> [<data in>]";
 		cerr << endl;
 		exit(2);
 	}
 	Config config;
 	config.image_file_input = argv[1];
 	config.iterations = atoi(argv[2]);
-	config.data_file_output = argv[3];
-	if (argc == 4) {
+	config.temperature = atof(argv[3]);
+	config.data_file_output = argv[4];
+	if (argc == 5) {
 		config.data_input_given = false;
 	} else {
 		config.data_input_given = true;
-		config.data_file_input = argv[4];
+		config.data_file_input = argv[5];
 	}
 	return config;
 }
@@ -56,7 +59,7 @@ int main(int argc, char **argv)
 	Image target = Image(config.image_file_input);
 
 	ImageDrawerCostFunction<CircleImage> cost_function(target);
-	GreedyHeuristic heuristic;
+	SimulatedAnnealingHeuristic<rng> heuristic(uni, config.temperature);
 	CircleImageNeighborFactory<rng> neighbor_factory(uni, 20);
 	CircleImage circles(target.baseColumns(), target.baseRows());
 	if (config.data_input_given) 
