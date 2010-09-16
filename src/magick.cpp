@@ -16,16 +16,17 @@ int main(int /*argc*/,char **argv)
     // Set draw options 
     image.strokeColor("red"); // Outline color 
     image.fillColor("green"); // Fill color 
-    image.strokeWidth(5);
+    image.strokeWidth(10);
 
     // Draw a circle 
-    image.draw( DrawableCircle(100,100, 50,100) );
+    //image.draw( DrawableCircle(100,100, 50,100) );
 
     // Draw a rectangle 
-    image.draw( DrawableRectangle(200,200, 270,170) );
+    image.draw( DrawableRectangle(100,50, 200,150) );
 
     // Display the result 
     image.display( ); 
+    image.write("magick.png");
   } 
   catch( exception &error_ ) 
     { 
