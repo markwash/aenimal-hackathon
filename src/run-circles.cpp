@@ -33,6 +33,16 @@ int main(int argc, char **argv)
 	char *target_image_file = parse_args(argc, argv);
 	Image target = Image(target_image_file);
 
+	ImageDrawerCostFunction<CircleImage> cost_function(target);
+	GreedyHeuristic heuristic;
+	CircleImageNeighborFactory<rng> neighbor_factory(uni, 100);
+	CircleImage circles(target.baseColumns(),
+			    target.baseRows());
+
+	HeuristicSearcher<CircleImage> searcher(cost_function, heuristic,
+						neighbor_factory, circles);
+
+
 	return 0;
 }
 
