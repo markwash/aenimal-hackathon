@@ -75,6 +75,7 @@ int main(int argc, char **argv)
 	circles = searcher.bestState();
 	Image image = circles.draw();
 	circles.save(config.data_file_output);
+	cout << "Ratio: " << searcher.acceptRatio() << endl;
 	image.display();
 
 	return 0;

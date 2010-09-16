@@ -19,13 +19,17 @@ class HeuristicSearcher {
 		current_state(initial_state),
 		current_cost(cost_function.getCost(current_state)),
 		best_state(initial_state),
-		best_cost(current_cost)
+		best_cost(current_cost),
+		accepts(0),
+		iterations(0)
 		{}
 
 	T currentState() { return current_state; }
 	double currentCost() { return current_cost; }
 	T bestState() { return best_state; }
 	double bestCost() { return best_cost; }
+
+	double acceptRatio(void) { return 1.0 * accepts / iterations; }
 
 	void runOnce(void);
 
@@ -38,6 +42,9 @@ class HeuristicSearcher {
 	T best_state;
 	double best_cost;
 
+	unsigned int accepts;
+	unsigned int iterations;
+
 	const CostFunction<T> &cost_function;
 	const CostHeuristic &cost_heuristic;
 	const NeighborFactory<T> &neighbor_factory;
@@ -45,9 +52,11 @@ class HeuristicSearcher {
 
 template <typename T>
 void HeuristicSearcher<T>::runOnce(void) {
+	iterations++;
 	T neighbor = neighbor_factory.getNeighbor(current_state);
 	double neighbor_cost = cost_function.getCost(neighbor);
 	if (cost_heuristic.compare(current_cost, neighbor_cost) > 0) {
+		accepts++;
 		current_state = neighbor;
 		current_cost = neighbor_cost;
 	}
