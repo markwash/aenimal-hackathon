@@ -71,7 +71,8 @@ int main(int argc, char **argv)
 	for (int i = 0; i < config.iterations; i++) {
 		if (i % 25 == 0) {
 			cout << "\r";
-			cout << 100.0 * i / config.iterations << "%" << flush;
+			cout << 100.0 * i / config.iterations << "%      ";
+			cout << flush;
 		}
 		searcher.runOnce();
 	}
@@ -81,7 +82,6 @@ int main(int argc, char **argv)
 	Image image = circles.draw();
 	circles.save(config.data_file_output);
 	cout << "Ratio: " << searcher.acceptRatio() << endl;
-	image.display();
 
 	return 0;
 }
