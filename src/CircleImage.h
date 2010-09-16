@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <Magick++.h>
+#include <iostream>
 
 using namespace std;
 using namespace Magick;
@@ -29,7 +30,7 @@ class CircleImage {
 	Image draw(void) const;
 
 	private:
-	list<Drawable> buildDrawList(void) const;
+	void buildDrawList(list<Drawable> &draw_list) const;
 
 	int width, height;
 	vector<Circle> circles;
@@ -38,12 +39,14 @@ class CircleImage {
 Image CircleImage::draw(void) const {
 	Image image(Geometry(width, height), Color("white"));
 	image.strokeWidth(0);
-	image.draw(buildDrawList());
+	list<Drawable> draw_list;
+	buildDrawList(draw_list);
+	if (draw_list.size() > 0)
+		image.draw(draw_list);
 	return image;
 }
 
-list<Drawable> CircleImage::buildDrawList(void) const {
-	list<Drawable> draw_list;
+void CircleImage::buildDrawList(list<Drawable> &draw_list) const {
 	Circle circle;
 	for (unsigned int i = 0; i < circles.size(); i++) {
 		circle = circles[i];
@@ -53,7 +56,6 @@ list<Drawable> CircleImage::buildDrawList(void) const {
 			DrawableCircle(circle.x, circle.y,
 				       circle.x, circle.y + circle.radius));
 	}
-	return draw_list;
 }
 
 #endif
