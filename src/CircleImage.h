@@ -57,7 +57,7 @@ void CircleImage::save(char *filename) const {
 	Circle circle;
 	for (unsigned int i = 0; i < circles.size(); i++) {
 		circle = circles[i];
-		out << circle.x << " " << circle.y << " " << circle.radius;
+		out << circle.x << " " << circle.y << " " << circle.radius << " ";
 		out << circle.red << " " << circle.blue << " " << circle.green;
 		out << endl;
 	}
