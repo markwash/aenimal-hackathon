@@ -5,13 +5,14 @@
 #include "CostHeuristic.h"
 #include "NeighborFactory.h"
 
+
 template <typename T>
 class HeuristicSearcher {	
 	public:
 	HeuristicSearcher(const CostFunction<T> &cost_function,
 			  const CostHeuristic &cost_heuristic,
 			  const NeighborFactory<T> &neighbor_factory,
-			  T initial_state):
+			  T &initial_state):
 		cost_function(cost_function),
 		cost_heuristic(cost_heuristic),
 		neighbor_factory(neighbor_factory),
