@@ -7,7 +7,8 @@ noinst_PROGRAMS = \
 	magick \
 	runci \
 	TestCircleImage \
-	TestCircleImageNeighborFactory
+	TestCircleImageNeighborFactory \
+	TestImageDrawerCostFunction
 
 TestHeuristicSearcher_SOURCES = \
 	TestHeuristicSearcher.cpp
@@ -45,3 +46,9 @@ TestCircleImageNeighborFactory_SOURCES = \
 
 TestCircleImageNeighborFactory_LDFLAGS = -lboost_unit_test_framework-mt
 TestCircleImageNeighborFactory_LDADD = $(GRAPHICSMAGICK_LIBS)
+
+TestImageDrawerCostFunction_SOURCES = \
+	TestImageDrawerCostFunction.cpp
+
+TestImageDrawerCostFunction_LDFLAGS = -lboost_unit_test_framework-mt
+TestImageDrawerCostFunction_LDADD = $(GRAPHICSMAGICK_LIBS)
