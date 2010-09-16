@@ -35,13 +35,16 @@ int main(int argc, char **argv)
 
 	ImageDrawerCostFunction<CircleImage> cost_function(target);
 	GreedyHeuristic heuristic;
-	CircleImageNeighborFactory<rng> neighbor_factory(uni, 100);
+	CircleImageNeighborFactory<rng> neighbor_factory(uni, 20);
 	CircleImage circles(target.baseColumns(),
 			    target.baseRows());
 
 	HeuristicSearcher<CircleImage> searcher(cost_function, heuristic,
 						neighbor_factory, circles);
 
+	for (int i = 0; i < 50000; i++)
+		searcher.runOnce();
+	searcher.currentState().draw().display();
 
 	return 0;
 }
