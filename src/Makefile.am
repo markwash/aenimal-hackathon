@@ -9,6 +9,7 @@ noinst_PROGRAMS = \
 	runci \
 	run-circles \
 	display \
+	save \
 	TestCircleImage \
 	TestCircleImageNeighborFactory \
 	TestImageDrawerCostFunction
@@ -52,6 +53,11 @@ display_SOURCES = \
 	display.cpp
 
 display_LDADD = $(GRAPHICSMAGICK_LIBS)
+
+save_SOURCES = \
+	save.cpp
+
+save_LDADD = $(GRAPHICSMAGICK_LIBS)
 
 TestCircleImage_SOURCES = \
 	TestCircleImage.cpp
