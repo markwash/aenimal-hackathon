@@ -104,15 +104,16 @@ void CircleImageNeighborFactory<RNG>::changeColor(double &color, double max_diff
 template <class RNG>
 void CircleImageNeighborFactory<RNG>::moveCircle(Circle &circle, int width, int height) const
 {
+	int dist = rng() * 5 + 1;
 	double choice = rng();
 	if (choice < 0.25)
-		circle.x = (circle.x + 1) % width;
+		circle.x = (circle.x + dist) % width;
 	else if (choice < 0.50)
-		circle.x = (width + circle.x - 1) % width;
+		circle.x = (width + circle.x - dist) % width;
 	else if (choice < 0.75)
-		circle.y = (circle.y + 1) % height;
+		circle.y = (circle.y + dist) % height;
 	else
-		circle.y = (height + circle.y - 1) % height;
+		circle.y = (height + circle.y - dist) % height;
 }
 
 
