@@ -22,14 +22,16 @@ class MockImageDrawer
 };
 
 struct F {
-	F(): cost_function(Image(Geometry(400, 400), Color("black"))) {}
-	ImageDrawerCostFunction<MockImageDrawer> cost_function;
+	F() {}
 };
 
 BOOST_FIXTURE_TEST_CASE(get_cost_works, F)
 {
-	Image image(Geometry(400, 400), Color("white"));
-	MockImageDrawer drawer = MockImageDrawer(image);
+	InitializeMagick(NULL);
+	Image black(Geometry(400, 400), Color("black"));
+	Image white(Geometry(400, 400), Color("white"));
+	ImageDrawerCostFunction<MockImageDrawer> cost_function(black);
+	MockImageDrawer drawer = MockImageDrawer(white);
 	double cost = cost_function.getCost(drawer);
 	cout << cost << endl;
 }
