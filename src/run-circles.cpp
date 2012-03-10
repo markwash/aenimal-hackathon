@@ -66,13 +66,16 @@ int main(int argc, char **argv)
 	SimulatedAnnealingHeuristic<rng> heuristic(uni, config.temperature);
 	CircleImageNeighborFactory<rng> neighbor_factory(uni, config.circles);
 	CircleImage circles(target.baseColumns(), target.baseRows());
+	CircleImage best_circles(target.baseColumns(), target.baseRows());
 	if (config.data_input_given) { 
 		ifstream input(config.data_file_input);
+		best_circles = CircleImage(input);
 		circles = CircleImage(input);
 	}
 
 	HeuristicSearcher<CircleImage> searcher(cost_function, heuristic,
-						neighbor_factory, circles);
+						neighbor_factory, circles,
+						best_circles);
 
 	for (int i = 0; i < config.iterations; i++) {
 		if (i % 25 == 0) {
@@ -84,9 +87,11 @@ int main(int argc, char **argv)
 	}
 	cout << "\r" << flush;
 
-	circles = searcher.bestState();
+	best_circles = searcher.bestState();
+	circles = searcher.currentState();
 	Image image = circles.draw();
 	ofstream output(config.data_file_output);
+	best_circles.save(output);
 	circles.save(output);
 	cout << "Ratio: " << searcher.acceptRatio() << endl;
 	cout << "Cost: " << searcher.bestCost() << endl;

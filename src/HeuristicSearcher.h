@@ -24,6 +24,21 @@ class HeuristicSearcher {
 		iterations(0)
 		{}
 
+	HeuristicSearcher(const CostFunction<T> &cost_function,
+			  const CostHeuristic &cost_heuristic,
+			  const NeighborFactory<T> &neighbor_factory,
+			  T &initial_state, T &best_state):
+		cost_function(cost_function),
+		cost_heuristic(cost_heuristic),
+		neighbor_factory(neighbor_factory),
+		current_state(initial_state),
+		current_cost(cost_function.getCost(current_state)),
+		best_state(best_state),
+		best_cost(cost_function.getCost(best_state)),
+		accepts(0),
+		iterations(0)
+		{}
+
 	T currentState() { return current_state; }
 	double currentCost() { return current_cost; }
 	T bestState() { return best_state; }
