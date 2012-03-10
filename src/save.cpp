@@ -31,7 +31,8 @@ int main(int argc, char **argv)
 	InitializeMagick(*argv);
 	Config config = parse_args(argc, argv);
 
-	CircleImage circles(config.data_file_in);
+	ifstream input(config.data_file_in);
+	CircleImage circles(input);
 	Image image = circles.draw();
 	image.write(config.image_file_out);
 	return 0;

@@ -21,8 +21,9 @@ int main(int argc, char **argv)
 {
 	InitializeMagick(*argv);
 	char *file = parse_args(argc, argv);
+	ifstream input(file);
 
-	CircleImage circles(file);
+	CircleImage circles(input);
 	Image image = circles.draw();
 	image.display();
 	return 0;
