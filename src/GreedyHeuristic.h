@@ -6,7 +6,7 @@
 class GreedyHeuristic: public CostHeuristic
 {
 	public:
-	int compare(double cost1, double cost2) const {
+	int compare(double cost1, double cost2) {
 		return cost2 < cost1 ? 1 : -1;
 	}
 };

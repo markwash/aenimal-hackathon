@@ -28,9 +28,7 @@ class MockCostHeuristic: public CostHeuristic {
 	void setCannedResponse(int response) {
 		this->response = response;
 	}
-	int compare(double cost1, double cost2) const {
-		return response;
-	}
+	int compare(double cost1, double cost2) { return response; }
 	private:
 	int response;
 };

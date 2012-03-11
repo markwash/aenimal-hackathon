@@ -20,6 +20,7 @@ TestHeuristicSearcher_SOURCES = \
 TestHeuristicSearcher_LDFLAGS = -lboost_unit_test_framework-mt
 
 TestSimulatedAnnealingHeuristic_SOURCES = \
+	SimulatedAnnealingStatistics.cpp \
 	TestSimulatedAnnealingHeuristic.cpp
 
 TestSimulatedAnnealingHeuristic_LDFLAGS = -lboost_unit_test_framework-mt

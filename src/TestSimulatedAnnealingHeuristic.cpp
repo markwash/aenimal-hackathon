@@ -67,3 +67,64 @@ BOOST_FIXTURE_TEST_CASE(go_greedy_if_temperature_zero, F)
 	rand.canned_response = 0.0;
 	BOOST_CHECK_EQUAL(heuristic.compare(100.0, 200.0), -1);
 }
+
+BOOST_FIXTURE_TEST_CASE(default_statistics, F)
+{
+	SimulatedAnnealingStatistics stats;
+	stats = heuristic.statistics();
+	BOOST_CHECK_EQUAL(stats.acceptRatio(), 0.0);
+	BOOST_CHECK_EQUAL(stats.greedyAcceptRatio(), 0.0);
+	BOOST_CHECK_EQUAL(stats.speculativeAcceptRatio(), 0.0);
+	BOOST_CHECK_EQUAL(stats.rejectRatio(), 0.0);
+}
+
+BOOST_FIXTURE_TEST_CASE(all_greedy_accept_ratio, F)
+{
+	heuristic.setTemp(0.0);  // go greedy
+	// 3 rejects
+	for (int i = 0; i < 3; i++)
+		BOOST_CHECK_EQUAL(heuristic.compare(100.0, 200.0), -1);
+	// 7 accepts
+	for (int i = 0; i < 7; i++)
+		BOOST_CHECK_EQUAL(heuristic.compare(100.0, 50.0), 1);
+
+	SimulatedAnnealingStatistics stats = heuristic.statistics();
+	BOOST_CHECK_EQUAL(stats.acceptRatio(), 0.7);
+	BOOST_CHECK_EQUAL(stats.rejectRatio(), 0.3);
+	BOOST_CHECK_EQUAL(stats.greedyAcceptRatio(), 0.7);
+	BOOST_CHECK_EQUAL(stats.speculativeAcceptRatio(), 0.0);
+}
+
+BOOST_FIXTURE_TEST_CASE(mixed_accept_ratio, F)
+{
+	// accept anything speculatively
+	rand.canned_response = 0.0;
+	for (int i = 0; i < 3; i++)
+		BOOST_CHECK_EQUAL(heuristic.compare(1, 2), 1);
+	for (int i = 0; i < 5; i++)
+		BOOST_CHECK_EQUAL(heuristic.compare(2, 1), 1);
+
+	// go greedy
+	rand.canned_response = 1.0;
+	for (int i = 0; i < 2; i++)
+		BOOST_CHECK_EQUAL(heuristic.compare(1, 2), -1);
+	
+	SimulatedAnnealingStatistics stats = heuristic.statistics();
+	BOOST_CHECK_EQUAL(stats.acceptRatio(), 0.8);
+	BOOST_CHECK_EQUAL(stats.rejectRatio(), 0.2);
+	BOOST_CHECK_EQUAL(stats.greedyAcceptRatio(), 0.5);
+	BOOST_CHECK_EQUAL(stats.speculativeAcceptRatio(), 0.3);
+}
+
+BOOST_FIXTURE_TEST_CASE(reset_statistics, F)
+{
+	for (int i = 0; i < 10; i++)
+		for (int j = 0; j < 10; j++)
+			heuristic.compare(i, j);
+	heuristic.resetStatistics();
+	SimulatedAnnealingStatistics stats = heuristic.statistics();
+	BOOST_CHECK_EQUAL(stats.acceptRatio(), 0.0);
+	BOOST_CHECK_EQUAL(stats.greedyAcceptRatio(), 0.0);
+	BOOST_CHECK_EQUAL(stats.speculativeAcceptRatio(), 0.0);
+	BOOST_CHECK_EQUAL(stats.rejectRatio(), 0.0);
+}
