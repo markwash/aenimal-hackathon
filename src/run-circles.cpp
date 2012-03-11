@@ -71,6 +71,7 @@ int main(int argc, char **argv)
 		ifstream input(config.data_file_input);
 		best_circles = CircleImage(input);
 		circles = CircleImage(input);
+		input.close();
 	}
 
 	HeuristicSearcher<CircleImage> searcher(cost_function, heuristic,
