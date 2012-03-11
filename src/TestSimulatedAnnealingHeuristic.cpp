@@ -60,3 +60,10 @@ BOOST_FIXTURE_TEST_CASE(sometimes_prefer_higher_cost_if_rand_05, F)
 	for (int i = 7; i < 10; i++)
 		BOOST_CHECK_EQUAL(heuristic.compare(0.0, 1.0 * i), -1);
 }
+
+BOOST_FIXTURE_TEST_CASE(go_greedy_if_temperature_zero, F)
+{
+	heuristic.setTemp(0.0);
+	rand.canned_response = 0.0;
+	BOOST_CHECK_EQUAL(heuristic.compare(100.0, 200.0), -1);
+}
