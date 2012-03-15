@@ -3,7 +3,9 @@
 #define BOOST_TEST_MODULE TestHeuristicSearcher
 #include <boost/test/unit_test.hpp>
 
+#include <cstring>
 #include <map>
+#include <vector>
 using namespace std;
 
 class MockCostFunction: public CostFunction<int> {
@@ -48,10 +50,26 @@ class MockNeighborFactory: public NeighborFactory<int> {
 	map<int, int> neighbors;
 };
 
+class MockHeuristicRecorder: public HeuristicRecorder {
+	public:
+	void recordSelection(double cost) {
+		pair<const char *, double> item("Selection", cost);
+		records.push_back(item);
+	}
+
+	void recordRejection(double cost) {
+		pair<const char *, double> item("Rejection", cost);
+		records.push_back(item);
+	}
+
+	vector<pair<const char *, double> > records;
+};
+
 struct F {
 	MockCostFunction cost_function;
 	MockCostHeuristic cost_heuristic;
 	MockNeighborFactory neighbor_factory;
+	MockHeuristicRecorder recorder;
 	int initial_state;
 	double initial_state_cost;
 
@@ -62,7 +80,7 @@ struct F {
 		initial_state_cost(10.0),
 		cost_function(0, 10.0),
 		searcher(cost_function, cost_heuristic,
-			 neighbor_factory, initial_state)
+			 neighbor_factory, recorder, initial_state)
 	{};
 	
 };
@@ -131,4 +149,60 @@ BOOST_FIXTURE_TEST_CASE(save_best_state2, F)
 	BOOST_CHECK_EQUAL(searcher.currentCost(), 1.0);
 	BOOST_CHECK_EQUAL(searcher.bestState(), 1);
 	BOOST_CHECK_EQUAL(searcher.bestCost(), 1.0);
+}
+
+BOOST_FIXTURE_TEST_CASE(record_selection, F)
+{
+	neighbor_factory.addNeighbor(0, 1);
+	cost_function.addCost(1, 1.0);
+	searcher.runOnce();
+	BOOST_CHECK_EQUAL(recorder.records[0].first, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[0].second, 1.0);
+}
+
+BOOST_FIXTURE_TEST_CASE(record_selection_higher, F)
+{
+	neighbor_factory.addNeighbor(0, 1);
+	cost_function.addCost(1, 11.0);
+	searcher.runOnce();
+	BOOST_CHECK_EQUAL(recorder.records[0].first, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[0].second, 11.0);
+}
+
+BOOST_FIXTURE_TEST_CASE(record_rejection, F)
+{
+	neighbor_factory.addNeighbor(0, 1);
+	cost_function.addCost(1, 11.0);
+	cost_heuristic.setCannedResponse(-1);
+	searcher.runOnce();
+	BOOST_CHECK_EQUAL(recorder.records[0].first, "Rejection");
+	BOOST_CHECK_EQUAL(recorder.records[0].second, 11.0);
+}
+
+BOOST_FIXTURE_TEST_CASE(record_multiples, F)
+{
+	for (int i = 0; i < 5; i++) {
+		neighbor_factory.addNeighbor(i, i + 1);
+		cost_function.addCost(i + 1, 10.0 + i + 1);
+	}
+
+	searcher.runOnce();
+	cost_heuristic.setCannedResponse(-1);
+	searcher.runOnce();
+	cost_heuristic.setCannedResponse(1);
+	searcher.runOnce();
+	searcher.runOnce();
+	cost_heuristic.setCannedResponse(-1);
+	searcher.runOnce();
+
+	BOOST_CHECK_EQUAL(recorder.records[0].first, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[0].second, 11.0);
+	BOOST_CHECK_EQUAL(recorder.records[1].first, "Rejection");
+	BOOST_CHECK_EQUAL(recorder.records[1].second, 12.0);
+	BOOST_CHECK_EQUAL(recorder.records[2].first, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[2].second, 12.0);
+	BOOST_CHECK_EQUAL(recorder.records[3].first, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[3].second, 13.0);
+	BOOST_CHECK_EQUAL(recorder.records[4].first, "Rejection");
+	BOOST_CHECK_EQUAL(recorder.records[4].second, 14.0);
 }

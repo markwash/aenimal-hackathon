@@ -3,6 +3,7 @@
 
 #include "CostFunction.h"
 #include "CostHeuristic.h"
+#include "HeuristicRecorder.h"
 #include "NeighborFactory.h"
 
 
@@ -12,10 +13,12 @@ class HeuristicSearcher {
 	HeuristicSearcher(const CostFunction<T> &cost_function,
 			  const CostHeuristic &cost_heuristic,
 			  const NeighborFactory<T> &neighbor_factory,
+			  HeuristicRecorder &recorder,
 			  T &initial_state):
 		cost_function(cost_function),
 		cost_heuristic(cost_heuristic),
 		neighbor_factory(neighbor_factory),
+		recorder(recorder),
 		current_state(initial_state),
 		current_cost(cost_function.getCost(current_state)),
 		best_state(initial_state),
@@ -27,10 +30,12 @@ class HeuristicSearcher {
 	HeuristicSearcher(const CostFunction<T> &cost_function,
 			  const CostHeuristic &cost_heuristic,
 			  const NeighborFactory<T> &neighbor_factory,
+			  HeuristicRecorder &recorder,
 			  T &initial_state, T &best_state):
 		cost_function(cost_function),
 		cost_heuristic(cost_heuristic),
 		neighbor_factory(neighbor_factory),
+		recorder(recorder),
 		current_state(initial_state),
 		current_cost(cost_function.getCost(current_state)),
 		best_state(best_state),
@@ -63,6 +68,7 @@ class HeuristicSearcher {
 	const CostFunction<T> &cost_function;
 	const CostHeuristic &cost_heuristic;
 	const NeighborFactory<T> &neighbor_factory;
+	HeuristicRecorder &recorder;
 };
 
 template <typename T>
@@ -72,8 +78,11 @@ void HeuristicSearcher<T>::runOnce(void) {
 	double neighbor_cost = cost_function.getCost(neighbor);
 	if (cost_heuristic.compare(current_cost, neighbor_cost) > 0) {
 		accepts++;
+		recorder.recordSelection(neighbor_cost);
 		current_state = neighbor;
 		current_cost = neighbor_cost;
+	} else {
+		recorder.recordRejection(neighbor_cost);
 	}
 	saveCurrentIfBest();
 }

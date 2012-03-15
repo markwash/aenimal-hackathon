@@ -8,6 +8,7 @@ using namespace std;
 using namespace boost;
 using namespace Magick;
 
+#include "DummyHeuristicRecorder.h"
 #include "ImageDrawerCostFunction.h"
 #include "CircleImageNeighborFactory.h"
 #include "GreedyHeuristic.h"
@@ -65,6 +66,7 @@ int main(int argc, char **argv)
 	ImageDrawerCostFunction<CircleImage> cost_function(target);
 	SimulatedAnnealingHeuristic<rng> heuristic(uni, config.temperature);
 	CircleImageNeighborFactory<rng> neighbor_factory(uni, config.circles);
+	DummyHeuristicRecorder recorder;
 	CircleImage circles(target.baseColumns(), target.baseRows());
 	CircleImage best_circles(target.baseColumns(), target.baseRows());
 	if (config.data_input_given) { 
@@ -75,8 +77,8 @@ int main(int argc, char **argv)
 	}
 
 	HeuristicSearcher<CircleImage> searcher(cost_function, heuristic,
-						neighbor_factory, circles,
-						best_circles);
+						neighbor_factory, recorder,
+						circles, best_circles);
 
 	for (int i = 0; i < config.iterations; i++) {
 		if (i % 25 == 0) {
