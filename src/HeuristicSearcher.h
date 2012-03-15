@@ -10,7 +10,7 @@ template <typename T>
 class HeuristicSearcher {	
 	public:
 	HeuristicSearcher(const CostFunction<T> &cost_function,
-			  CostHeuristic &cost_heuristic,
+			  const CostHeuristic &cost_heuristic,
 			  const NeighborFactory<T> &neighbor_factory,
 			  T &initial_state):
 		cost_function(cost_function),
@@ -25,7 +25,7 @@ class HeuristicSearcher {
 		{}
 
 	HeuristicSearcher(const CostFunction<T> &cost_function,
-			  CostHeuristic &cost_heuristic,
+			  const CostHeuristic &cost_heuristic,
 			  const NeighborFactory<T> &neighbor_factory,
 			  T &initial_state, T &best_state):
 		cost_function(cost_function),
@@ -61,7 +61,7 @@ class HeuristicSearcher {
 	unsigned int iterations;
 
 	const CostFunction<T> &cost_function;
-	CostHeuristic &cost_heuristic;
+	const CostHeuristic &cost_heuristic;
 	const NeighborFactory<T> &neighbor_factory;
 };
 
