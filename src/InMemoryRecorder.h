@@ -18,16 +18,18 @@ class Record {
 
 class InMemoryRecorder: public HeuristicRecorder {
 	public:
-	InMemoryRecorder(void): iteration(0) {}
+	InMemoryRecorder(void);
 	void recordSelection(double cost);
 	void recordRejection(double cost);
 	void recordInitial(double cost);
 	unsigned int iterations(void) const;
 
-	vector<Record> selections;
-	vector<Record> rejections;
+	const vector<Record> &selections;
+	const vector<Record> &rejections;
 
 	private:
+	vector<Record> selections_;
+	vector<Record> rejections_;
 	unsigned int iteration;
 };
 
