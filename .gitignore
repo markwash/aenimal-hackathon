@@ -22,6 +22,7 @@ src/TestCircleImageNeighborFactory
 src/TestGreedyHeuristic
 src/TestHeuristicSearcher
 src/TestImageDrawerCostFunction
+src/TestInMemoryRecorder
 src/TestIntegration
 src/TestSimulatedAnnealingHeuristic
 src/display
