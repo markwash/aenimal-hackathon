@@ -12,7 +12,8 @@ noinst_PROGRAMS = \
 	save \
 	TestCircleImage \
 	TestCircleImageNeighborFactory \
-	TestImageDrawerCostFunction
+	TestImageDrawerCostFunction \
+	TestInMemoryRecorder
 
 TestHeuristicSearcher_SOURCES = \
 	TestHeuristicSearcher.cpp
@@ -76,3 +77,9 @@ TestImageDrawerCostFunction_SOURCES = \
 
 TestImageDrawerCostFunction_LDFLAGS = -lboost_unit_test_framework-mt
 TestImageDrawerCostFunction_LDADD = $(GRAPHICSMAGICK_LIBS)
+
+TestInMemoryRecorder_SOURCES = \
+	InMemoryRecorder.cpp \
+	TestInMemoryRecorder.cpp
+
+TestInMemoryRecorder_LDFLAGS = -lboost_unit_test_framework-mt
