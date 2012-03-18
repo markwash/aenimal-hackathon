@@ -1,5 +1,6 @@
 #include <boost/random.hpp>
 #include <Magick++.h>
+#include <iomanip>
 #include <iostream>
 #include <stdlib.h>
 #include <ctime>
@@ -8,7 +9,7 @@ using namespace std;
 using namespace boost;
 using namespace Magick;
 
-#include "DummyHeuristicRecorder.h"
+#include "InMemoryRecorder.h"
 #include "ImageDrawerCostFunction.h"
 #include "CircleImageNeighborFactory.h"
 #include "GreedyHeuristic.h"
@@ -31,14 +32,18 @@ class Config {
 	bool data_input_given;
 	char *data_file_input;
 	char *data_file_output;
+	bool cost_data_input_given;
+	char *cost_data_file_input;
+	char *cost_data_file_output;
 };
 
 Config parse_args(int argc, char **argv)
 {
-	if (argc != 6 && argc != 7) {
+	if (argc < 7 || argc > 9) {
 		cerr << "Usage: " << argv[0];
 		cerr << " <image file> <circles> <iterations>";
-		cerr << " <temp> <data out> [<data in>]";
+		cerr << " <temp> <data out> <cost data out>";
+		cerr << " [<data in> [<cost data in>]]";
 		cerr << endl;
 		exit(2);
 	}
@@ -48,12 +53,13 @@ Config parse_args(int argc, char **argv)
 	config.iterations = atoi(argv[3]);
 	config.temperature = atof(argv[4]);
 	config.data_file_output = argv[5];
-	if (argc == 6) {
-		config.data_input_given = false;
-	} else {
-		config.data_input_given = true;
-		config.data_file_input = argv[6];
-	}
+	config.cost_data_file_output = argv[6];
+	config.data_input_given = (argc > 7);
+	config.cost_data_input_given = (argc > 8);
+	if (config.data_input_given)
+		config.data_file_input = argv[7];
+	if (config.cost_data_input_given)
+		config.cost_data_file_input = argv[8];
 	return config;
 }
 
@@ -66,7 +72,7 @@ int main(int argc, char **argv)
 	ImageDrawerCostFunction<CircleImage> cost_function(target);
 	SimulatedAnnealingHeuristic<rng> heuristic(uni, config.temperature);
 	CircleImageNeighborFactory<rng> neighbor_factory(uni, config.circles);
-	DummyHeuristicRecorder recorder;
+	InMemoryRecorder recorder;
 	CircleImage circles(target.baseColumns(), target.baseRows());
 	CircleImage best_circles(target.baseColumns(), target.baseRows());
 	if (config.data_input_given) { 
@@ -75,15 +81,23 @@ int main(int argc, char **argv)
 		circles = CircleImage(input);
 		input.close();
 	}
+	if (config.cost_data_input_given) {
+		ifstream input(config.cost_data_file_input);
+		recorder.load(input);
+		input.close();
+	} else {
+		recorder.recordInitial(cost_function.getCost(circles));
+	}
 
 	HeuristicSearcher<CircleImage> searcher(cost_function, heuristic,
 						neighbor_factory, recorder,
 						circles, best_circles);
 
+	cout << setiosflags(ios::fixed) << setprecision(2);
 	for (int i = 0; i < config.iterations; i++) {
 		if (i % 25 == 0) {
 			cout << "\r";
-			cout << 100.0 * i / config.iterations << "%      ";
+			cout << 100.0 * i / config.iterations << "%";
 			cout << flush;
 		}
 		searcher.runOnce();
@@ -96,7 +110,8 @@ int main(int argc, char **argv)
 	ofstream output(config.data_file_output);
 	best_circles.save(output);
 	circles.save(output);
-	cout << "Ratio: " << searcher.acceptRatio() << endl;
+	ofstream cost_output(config.cost_data_file_output);
+	recorder.save(cost_output);
 	cout << "Cost: " << searcher.bestCost() << endl;
 
 	return 0;

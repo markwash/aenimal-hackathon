@@ -46,6 +46,7 @@ runci_SOURCES = \
 runci_LDADD = $(GRAPHICSMAGICK_LIBS)
 
 run_circles_SOURCES = \
+	InMemoryRecorder.cpp \
 	run-circles.cpp
 
 run_circles_LDADD = $(GRAPHICSMAGICK_LIBS)
