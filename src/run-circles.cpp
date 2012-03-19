@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 	}
 	if (config.cost_data_input_given) {
 		ifstream input(config.cost_data_file_input);
-		recorder.load(input);
+		input >> recorder;
 		input.close();
 	} else {
 		recorder.recordInitial(cost_function.getCost(circles));
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
 	best_circles.save(output);
 	circles.save(output);
 	ofstream cost_output(config.cost_data_file_output);
-	recorder.save(cost_output);
+	cost_output << recorder;
 	cout << "Cost: " << searcher.bestCost() << endl;
 
 	return 0;

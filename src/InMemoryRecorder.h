@@ -10,6 +10,12 @@ using std::istream;
 using std::ostream;
 using std::vector;
 
+template <typename DIM> class InMemoryRecorder;
+template <typename DIM>
+ostream & operator<<(ostream &out, const InMemoryRecorder<DIM> &recorder);
+template <typename DIM>
+istream & operator>>(istream &in, InMemoryRecorder<DIM> &recorder);
+
 class Record {
 	public:
 	Record(void):
@@ -28,8 +34,11 @@ class InMemoryRecorder: public HeuristicRecorder<DIM> {
 	void recordRejection(double cost, const DIM &dimension);
 	void recordInitial(double cost);
 	unsigned int iterations(void) const;
-	void save(ostream &out) const;
-	void load(istream &in);
+
+	friend ostream & operator<< <DIM>(
+			ostream &out, const InMemoryRecorder &recorder);
+	friend istream & operator>> <DIM>(
+			istream &in, InMemoryRecorder &recorder);
 
 	const vector<Record> &selections;
 	const vector<Record> &rejections;
@@ -41,6 +50,7 @@ class InMemoryRecorder: public HeuristicRecorder<DIM> {
 };
 
 using std::endl;
+using std::flush;
 
 template <typename DIM>
 InMemoryRecorder<DIM>::InMemoryRecorder(void):
@@ -78,38 +88,39 @@ void InMemoryRecorder<DIM>::recordRejection(double cost,
 }
 
 template <typename DIM>
-void InMemoryRecorder<DIM>::save(ostream &out) const {
-	out << iteration << " ";
-	out << selections_.size() << " ";
-	out << rejections_.size() << endl;
-	for (int i = 0; i < selections_.size(); i++) {
-		Record record = selections_[i];
+ostream & operator<<(ostream &out,
+		     const InMemoryRecorder<DIM> &recorder) {
+	out << recorder.iteration << " ";
+	out << recorder.selections_.size() << " ";
+	out << recorder.rejections_.size() << endl;
+	for (int i = 0; i < recorder.selections_.size(); i++) {
+		Record record = recorder.selections_[i];
 		out << record.iteration << " " << record.cost << endl;
 	}
-	for (int i = 0; i < rejections_.size(); i++) {
-		Record record = rejections_[i];
+	for (int i = 0; i < recorder.rejections_.size(); i++) {
+		Record record = recorder.rejections_[i];
 		out << record.iteration << " " << record.cost << endl;
 	}
-	out.flush();
+	out << flush;
 }
 
 template <typename DIM>
-void InMemoryRecorder<DIM>::load(istream &in) {
+istream & operator>>(istream &in, InMemoryRecorder<DIM> &recorder) {
 	int selection_count, rejection_count;
-	in >> iteration >> selection_count >> rejection_count;
+	in >> recorder.iteration >> selection_count >> rejection_count;
 
-	selections_ = vector<Record>();
+	recorder.selections_ = vector<Record>();
 	for (int i = 0; i < selection_count; i++) {
 		Record record;
 		in >> record.iteration >> record.cost;
-		selections_.push_back(record);
+		recorder.selections_.push_back(record);
 	}
 
-	rejections_ = vector<Record>();
+	recorder.rejections_ = vector<Record>();
 	for (int i = 0; i < rejection_count; i++) {
 		Record record;
 		in >> record.iteration >> record.cost;
-		rejections_.push_back(record);
+		recorder.rejections_.push_back(record);
 	}
 }
 

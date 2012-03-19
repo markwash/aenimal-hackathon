@@ -125,7 +125,7 @@ BOOST_FIXTURE_TEST_CASE(test_mixed_multiple_selection_rejection, F)
 BOOST_FIXTURE_TEST_CASE(test_save_trivial_to_file, F)
 {
 	stringstream ss(stringstream::out);
-	recorder.save(ss);
+	ss << recorder;
 	string output = ss.str();
 	BOOST_CHECK_EQUAL(output, "0 0 0\n");
 }
@@ -134,7 +134,7 @@ BOOST_FIXTURE_TEST_CASE(test_save_initial_to_file, F)
 {
 	recorder.recordInitial(-1.0);
 	stringstream ss(stringstream::out);
-	recorder.save(ss);
+	ss << recorder;
 
 	string expected("0 1 0\n"
 			"0 -1\n");
@@ -152,7 +152,7 @@ BOOST_FIXTURE_TEST_CASE(test_save_real_to_file, F)
 			recorder.recordRejection(1.0 * i, 0);
 
 	ostringstream ss;
-	recorder.save(ss);
+	ss << recorder;
 
 	string expected("4 3 2\n"
 			"0 -1\n"
@@ -175,7 +175,7 @@ BOOST_FIXTURE_TEST_CASE(test_load_trivial_from_file, F)
 
 	istringstream ss;
 	ss.str("0 0 0\n");
-	recorder.load(ss);
+	ss >> recorder;
 	BOOST_CHECK_EQUAL(recorder.iterations(), 0);
 	BOOST_CHECK_EQUAL(recorder.selections.size(), 0);
 	BOOST_CHECK_EQUAL(recorder.rejections.size(), 0);
@@ -186,7 +186,7 @@ BOOST_FIXTURE_TEST_CASE(test_load_initial_from_file, F)
 	istringstream ss;
 	ss.str("0 1 0\n"
 	       "0 1.0\n");
-	recorder.load(ss);
+	ss >> recorder;
 	BOOST_CHECK_EQUAL(recorder.iterations(), 0);
 	BOOST_CHECK_EQUAL(recorder.selections.size(), 1);
 	BOOST_CHECK_EQUAL(recorder.selections[0].iteration, 0);
@@ -205,7 +205,7 @@ BOOST_FIXTURE_TEST_CASE(test_load_real_from_file, F)
 	       "3 3.0\n"
 	       "5 5.0\n"
 	       "6 6.0\n");
-	recorder.load(ss);
+	ss >> recorder;
 	BOOST_CHECK_EQUAL(recorder.iterations(), 6);
 	BOOST_CHECK_EQUAL(recorder.selections.size(), 3);
 	BOOST_CHECK_EQUAL(recorder.selections[0].iteration, 0);
