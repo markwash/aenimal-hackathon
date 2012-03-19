@@ -19,9 +19,10 @@ int main(int argc, char **argv)
 	rng uni(generator, uni_dist);
 
 	CircleImageNeighborFactory<rng> neighborhood(uni, 100);
+	CircleImageChangeDimension dim;
 	
 	for (int i = 0; i < 10000; i++) {
-		img = neighborhood.getNeighbor(img);
+		img = neighborhood.getNeighbor(img, dim);
 	}
 
 	Image image = img.draw();

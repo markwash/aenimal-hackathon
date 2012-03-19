@@ -7,13 +7,13 @@
 #include "NeighborFactory.h"
 
 
-template <typename T>
+template <typename T, typename DIM>
 class HeuristicSearcher {	
 	public:
 	HeuristicSearcher(const CostFunction<T> &cost_function,
 			  const CostHeuristic &cost_heuristic,
-			  const NeighborFactory<T> &neighbor_factory,
-			  HeuristicRecorder &recorder,
+			  const NeighborFactory<T, DIM> &neighbor_factory,
+			  HeuristicRecorder<DIM> &recorder,
 			  T &initial_state):
 		cost_function(cost_function),
 		cost_heuristic(cost_heuristic),
@@ -27,8 +27,8 @@ class HeuristicSearcher {
 
 	HeuristicSearcher(const CostFunction<T> &cost_function,
 			  const CostHeuristic &cost_heuristic,
-			  const NeighborFactory<T> &neighbor_factory,
-			  HeuristicRecorder &recorder,
+			  const NeighborFactory<T, DIM> &neighbor_factory,
+			  HeuristicRecorder<DIM> &recorder,
 			  T &initial_state, T &best_state):
 		cost_function(cost_function),
 		cost_heuristic(cost_heuristic),
@@ -58,26 +58,27 @@ class HeuristicSearcher {
 
 	const CostFunction<T> &cost_function;
 	const CostHeuristic &cost_heuristic;
-	const NeighborFactory<T> &neighbor_factory;
-	HeuristicRecorder &recorder;
+	const NeighborFactory<T, DIM> &neighbor_factory;
+	HeuristicRecorder<DIM> &recorder;
 };
 
-template <typename T>
-void HeuristicSearcher<T>::runOnce(void) {
-	T neighbor = neighbor_factory.getNeighbor(current_state);
+template <typename T, typename DIM>
+void HeuristicSearcher<T, DIM>::runOnce(void) {
+	DIM dimension;
+	T neighbor = neighbor_factory.getNeighbor(current_state, dimension);
 	double neighbor_cost = cost_function.getCost(neighbor);
 	if (cost_heuristic.compare(current_cost, neighbor_cost) > 0) {
-		recorder.recordSelection(neighbor_cost);
+		recorder.recordSelection(neighbor_cost, dimension);
 		current_state = neighbor;
 		current_cost = neighbor_cost;
 	} else {
-		recorder.recordRejection(neighbor_cost);
+		recorder.recordRejection(neighbor_cost, dimension);
 	}
 	saveCurrentIfBest();
 }
 
-template <typename T>
-void HeuristicSearcher<T>::saveCurrentIfBest(void) {
+template <typename T, typename DIM>
+void HeuristicSearcher<T, DIM>::saveCurrentIfBest(void) {
 	if (current_cost < best_cost) {
 		best_state = current_state;
 		best_cost = current_cost;

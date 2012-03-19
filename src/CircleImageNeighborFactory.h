@@ -4,14 +4,20 @@
 #include "CircleImage.h"
 #include "NeighborFactory.h"
 
+enum CircleImageChangeDimension {
+	kNothingHereYet
+};
+
 template <class RNG>
-class CircleImageNeighborFactory: public NeighborFactory<CircleImage>
+class CircleImageNeighborFactory:
+	public NeighborFactory<CircleImage, CircleImageChangeDimension>
 {
 	public:
 	CircleImageNeighborFactory(RNG &rng, int target_size):
 		rng(rng), target_size(target_size)
 		{}
-	CircleImage getNeighbor(CircleImage &img) const;
+	CircleImage getNeighbor(CircleImage &img,
+			        CircleImageChangeDimension &dimension) const;
 
 	private:
 	void addRandomCircle(CircleImage &img) const;
@@ -28,7 +34,9 @@ class CircleImageNeighborFactory: public NeighborFactory<CircleImage>
 };
 
 template <class RNG>
-CircleImage CircleImageNeighborFactory<RNG>::getNeighbor(CircleImage &img) const
+CircleImage CircleImageNeighborFactory<RNG>::getNeighbor(
+		CircleImage &img,
+		CircleImageChangeDimension &dimension) const
 {
 	CircleImage neighbor = img;
 	if (neighbor.count() < target_size)

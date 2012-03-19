@@ -9,12 +9,12 @@ using namespace std;
 
 struct F {
 	F() {}
-	InMemoryRecorder recorder;
+	InMemoryRecorder<int> recorder;
 };
 
 BOOST_FIXTURE_TEST_CASE(test_interface, F)
 {
-	HeuristicRecorder &h_recorder = recorder;
+	HeuristicRecorder<int> &h_recorder = recorder;
 }
 
 BOOST_FIXTURE_TEST_CASE(test_initial_iterations, F)
@@ -53,7 +53,7 @@ BOOST_FIXTURE_TEST_CASE(test_record_initial_overwrites, F)
 
 BOOST_FIXTURE_TEST_CASE(test_record_initial_after_data_is_okay, F)
 {
-	recorder.recordSelection(0.0);
+	recorder.recordSelection(0.0, 0);
 	recorder.recordInitial(1.0);
 	BOOST_CHECK_EQUAL(recorder.selections.size(), 2);
 	BOOST_CHECK_EQUAL(recorder.selections[0].iteration, 0);
@@ -65,7 +65,7 @@ BOOST_FIXTURE_TEST_CASE(test_record_initial_after_data_is_okay, F)
 
 BOOST_FIXTURE_TEST_CASE(test_record_acceptance, F)
 {
-	recorder.recordSelection(0.0);
+	recorder.recordSelection(0.0, 0);
 	BOOST_CHECK_EQUAL(recorder.selections.size(), 1);
 	BOOST_CHECK_EQUAL(recorder.selections[0].cost, 0.0);
 	BOOST_CHECK_EQUAL(recorder.selections[0].iteration, 1);
@@ -74,7 +74,7 @@ BOOST_FIXTURE_TEST_CASE(test_record_acceptance, F)
 BOOST_FIXTURE_TEST_CASE(test_record_multiple_selections, F)
 {
 	for (int i = 0; i < 3; i++)
-		recorder.recordSelection(1.0 * i);
+		recorder.recordSelection(1.0 * i, 0);
 	BOOST_CHECK_EQUAL(recorder.selections.size(), 3);
 	for (int i = 0; i < 3; i++) {
 		BOOST_CHECK_EQUAL(recorder.selections[i].cost, 1.0 * i);
@@ -84,7 +84,7 @@ BOOST_FIXTURE_TEST_CASE(test_record_multiple_selections, F)
 
 BOOST_FIXTURE_TEST_CASE(test_record_rejection, F)
 {
-	recorder.recordRejection(0.0);
+	recorder.recordRejection(0.0, 0);
 	BOOST_CHECK_EQUAL(recorder.rejections.size(), 1);
 	BOOST_CHECK_EQUAL(recorder.rejections[0].cost, 0.0);
 	BOOST_CHECK_EQUAL(recorder.rejections[0].iteration, 1);
@@ -93,7 +93,7 @@ BOOST_FIXTURE_TEST_CASE(test_record_rejection, F)
 BOOST_FIXTURE_TEST_CASE(test_record_multiple_rejections, F)
 {
 	for (int i = 0; i < 3; i++)
-		recorder.recordRejection(1.0 * i);
+		recorder.recordRejection(1.0 * i, 0);
 	BOOST_CHECK_EQUAL(recorder.rejections.size(), 3);
 	for (int i = 0; i < 3; i++) {
 		BOOST_CHECK_EQUAL(recorder.rejections[i].cost, 1.0 * i);
@@ -105,9 +105,9 @@ BOOST_FIXTURE_TEST_CASE(test_mixed_multiple_selection_rejection, F)
 {
 	for (int i = 0; i < 10; i++)
 		if (i % 2 == 0)
-			recorder.recordSelection(1.0 * i);
+			recorder.recordSelection(1.0 * i, 0);
 		else
-			recorder.recordRejection(1.0 * i);
+			recorder.recordRejection(1.0 * i, 0);
 
 	BOOST_CHECK_EQUAL(recorder.iterations(), 10);
 	BOOST_CHECK_EQUAL(recorder.selections.size(), 5);
@@ -147,9 +147,9 @@ BOOST_FIXTURE_TEST_CASE(test_save_real_to_file, F)
 	recorder.recordInitial(-1.0);
 	for (int i = 0; i < 4; i++)
 		if (i % 2 == 0)
-			recorder.recordSelection(1.0 * i);
+			recorder.recordSelection(1.0 * i, 0);
 		else
-			recorder.recordRejection(1.0 * i);
+			recorder.recordRejection(1.0 * i, 0);
 
 	ostringstream ss;
 	recorder.save(ss);
@@ -169,9 +169,9 @@ BOOST_FIXTURE_TEST_CASE(test_load_trivial_from_file, F)
 	recorder.recordInitial(-1.0);
 	for (int i = 0; i < 4; i++)
 		if (i % 2 == 0)
-			recorder.recordSelection(1.0 * i);
+			recorder.recordSelection(1.0 * i, 0);
 		else
-			recorder.recordRejection(1.0 * i);
+			recorder.recordRejection(1.0 * i, 0);
 
 	istringstream ss;
 	ss.str("0 0 0\n");

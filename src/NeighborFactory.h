@@ -1,11 +1,11 @@
 #ifndef NEIGHBORFACTORY_H
 #define NEIGHBORFACTORY_H
 
-template <typename T>
+template <typename T, typename DIM>
 class NeighborFactory
 {
 	public:
-	virtual T getNeighbor(T &state) const = 0;
+	virtual T getNeighbor(T &state, DIM &dimension) const = 0;
 };
 
 #endif

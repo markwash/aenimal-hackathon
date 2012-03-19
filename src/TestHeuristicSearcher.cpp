@@ -37,32 +37,44 @@ class MockCostHeuristic: public CostHeuristic {
 	int response;
 };
 
-class MockNeighborFactory: public NeighborFactory<int> {
+class MockNeighborFactory: public NeighborFactory<int, int> {
 	public:
-	void addNeighbor(int state, int neighbor) {
-		neighbors[state] = neighbor;
+	void addNeighbor(int state, int neighbor, int dimension=0) {
+		pair<int, int> item(neighbor, dimension);
+		neighbors[state] = item;
 	}
-	int getNeighbor(int &state) const {
-		return neighbors.find(state)->second;
+	int getNeighbor(int &state, int &dimension) const {
+		pair<int, int> item = neighbors.find(state)->second;
+		dimension = item.second;
+		return item.first;
 	}
 
 	private:
-	map<int, int> neighbors;
+	map< int, pair<int, int> > neighbors;
 };
 
-class MockHeuristicRecorder: public HeuristicRecorder {
+class MockRecord {
 	public:
-	void recordSelection(double cost) {
-		pair<const char *, double> item("Selection", cost);
-		records.push_back(item);
+	MockRecord(const char *label, double cost, int dim):
+		label(label), cost(cost), dim(dim) {}
+	const char *label;
+	double cost;
+	int dim;
+};
+
+class MockHeuristicRecorder: public HeuristicRecorder<int> {
+	public:
+	void recordSelection(double cost, const int &dim) {
+		MockRecord record("Selection", cost, dim);
+		records.push_back(record);
 	}
 
-	void recordRejection(double cost) {
-		pair<const char *, double> item("Rejection", cost);
-		records.push_back(item);
+	void recordRejection(double cost, const int &dim) {
+		MockRecord record("Rejection", cost, dim);
+		records.push_back(record);
 	}
 
-	vector<pair<const char *, double> > records;
+	vector<MockRecord> records;
 };
 
 struct F {
@@ -73,7 +85,7 @@ struct F {
 	int initial_state;
 	double initial_state_cost;
 
-	HeuristicSearcher<int> searcher;
+	HeuristicSearcher<int, int> searcher;
 
 	F():
 		initial_state(0),
@@ -153,36 +165,39 @@ BOOST_FIXTURE_TEST_CASE(save_best_state2, F)
 
 BOOST_FIXTURE_TEST_CASE(record_selection, F)
 {
-	neighbor_factory.addNeighbor(0, 1);
+	neighbor_factory.addNeighbor(0, 1, 10);
 	cost_function.addCost(1, 1.0);
 	searcher.runOnce();
-	BOOST_CHECK_EQUAL(recorder.records[0].first, "Selection");
-	BOOST_CHECK_EQUAL(recorder.records[0].second, 1.0);
+	BOOST_CHECK_EQUAL(recorder.records[0].label, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[0].cost, 1.0);
+	BOOST_CHECK_EQUAL(recorder.records[0].dim, 10);
 }
 
 BOOST_FIXTURE_TEST_CASE(record_selection_higher, F)
 {
-	neighbor_factory.addNeighbor(0, 1);
+	neighbor_factory.addNeighbor(0, 1, 1);
 	cost_function.addCost(1, 11.0);
 	searcher.runOnce();
-	BOOST_CHECK_EQUAL(recorder.records[0].first, "Selection");
-	BOOST_CHECK_EQUAL(recorder.records[0].second, 11.0);
+	BOOST_CHECK_EQUAL(recorder.records[0].label, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[0].cost, 11.0);
+	BOOST_CHECK_EQUAL(recorder.records[0].dim, 1);
 }
 
 BOOST_FIXTURE_TEST_CASE(record_rejection, F)
 {
-	neighbor_factory.addNeighbor(0, 1);
+	neighbor_factory.addNeighbor(0, 1, 1);
 	cost_function.addCost(1, 11.0);
 	cost_heuristic.setCannedResponse(-1);
 	searcher.runOnce();
-	BOOST_CHECK_EQUAL(recorder.records[0].first, "Rejection");
-	BOOST_CHECK_EQUAL(recorder.records[0].second, 11.0);
+	BOOST_CHECK_EQUAL(recorder.records[0].label, "Rejection");
+	BOOST_CHECK_EQUAL(recorder.records[0].cost, 11.0);
+	BOOST_CHECK_EQUAL(recorder.records[0].dim, 1);
 }
 
 BOOST_FIXTURE_TEST_CASE(record_multiples, F)
 {
 	for (int i = 0; i < 5; i++) {
-		neighbor_factory.addNeighbor(i, i + 1);
+		neighbor_factory.addNeighbor(i, i + 1, i % 2);
 		cost_function.addCost(i + 1, 10.0 + i + 1);
 	}
 
@@ -195,14 +210,19 @@ BOOST_FIXTURE_TEST_CASE(record_multiples, F)
 	cost_heuristic.setCannedResponse(-1);
 	searcher.runOnce();
 
-	BOOST_CHECK_EQUAL(recorder.records[0].first, "Selection");
-	BOOST_CHECK_EQUAL(recorder.records[0].second, 11.0);
-	BOOST_CHECK_EQUAL(recorder.records[1].first, "Rejection");
-	BOOST_CHECK_EQUAL(recorder.records[1].second, 12.0);
-	BOOST_CHECK_EQUAL(recorder.records[2].first, "Selection");
-	BOOST_CHECK_EQUAL(recorder.records[2].second, 12.0);
-	BOOST_CHECK_EQUAL(recorder.records[3].first, "Selection");
-	BOOST_CHECK_EQUAL(recorder.records[3].second, 13.0);
-	BOOST_CHECK_EQUAL(recorder.records[4].first, "Rejection");
-	BOOST_CHECK_EQUAL(recorder.records[4].second, 14.0);
+	BOOST_CHECK_EQUAL(recorder.records[0].label, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[0].cost, 11.0);
+	BOOST_CHECK_EQUAL(recorder.records[0].dim, 0);
+	BOOST_CHECK_EQUAL(recorder.records[1].label, "Rejection");
+	BOOST_CHECK_EQUAL(recorder.records[1].cost, 12.0);
+	BOOST_CHECK_EQUAL(recorder.records[1].dim, 1);
+	BOOST_CHECK_EQUAL(recorder.records[2].label, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[2].cost, 12.0);
+	BOOST_CHECK_EQUAL(recorder.records[2].dim, 1);
+	BOOST_CHECK_EQUAL(recorder.records[3].label, "Selection");
+	BOOST_CHECK_EQUAL(recorder.records[3].cost, 13.0);
+	BOOST_CHECK_EQUAL(recorder.records[3].dim, 0);
+	BOOST_CHECK_EQUAL(recorder.records[4].label, "Rejection");
+	BOOST_CHECK_EQUAL(recorder.records[4].cost, 14.0);
+	BOOST_CHECK_EQUAL(recorder.records[4].dim, 1);
 }

@@ -5,15 +5,15 @@ noinst_PROGRAMS = \
 	TestSimulatedAnnealingHeuristic \
 	TestGreedyHeuristic \
 	TestIntegration \
+	TestInMemoryRecorder \
+	TestCircleImage \
+	TestImageDrawerCostFunction \
+	TestCircleImageNeighborFactory \
 	magick \
 	runci \
 	run-circles \
 	display \
-	save \
-	TestCircleImage \
-	TestCircleImageNeighborFactory \
-	TestImageDrawerCostFunction \
-	TestInMemoryRecorder
+	save
 
 TestHeuristicSearcher_SOURCES = \
 	TestHeuristicSearcher.cpp
@@ -46,7 +46,6 @@ runci_SOURCES = \
 runci_LDADD = $(GRAPHICSMAGICK_LIBS)
 
 run_circles_SOURCES = \
-	InMemoryRecorder.cpp \
 	run-circles.cpp
 
 run_circles_LDADD = $(GRAPHICSMAGICK_LIBS)
@@ -80,7 +79,6 @@ TestImageDrawerCostFunction_LDFLAGS = -lboost_unit_test_framework-mt
 TestImageDrawerCostFunction_LDADD = $(GRAPHICSMAGICK_LIBS)
 
 TestInMemoryRecorder_SOURCES = \
-	InMemoryRecorder.cpp \
 	TestInMemoryRecorder.cpp
 
 TestInMemoryRecorder_LDFLAGS = -lboost_unit_test_framework-mt

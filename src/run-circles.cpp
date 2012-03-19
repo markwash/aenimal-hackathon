@@ -72,13 +72,15 @@ int main(int argc, char **argv)
 	ImageDrawerCostFunction<CircleImage> cost_function(target);
 	SimulatedAnnealingHeuristic<rng> heuristic(uni, config.temperature);
 	CircleImageNeighborFactory<rng> neighbor_factory(uni, config.circles);
-	InMemoryRecorder recorder;
+	InMemoryRecorder<CircleImageChangeDimension> recorder;
 	CircleImage circles(target.baseColumns(), target.baseRows());
 	CircleImage best_circles(target.baseColumns(), target.baseRows());
 	if (config.data_input_given) { 
 		ifstream input(config.data_file_input);
 		best_circles = CircleImage(input);
 		circles = CircleImage(input);
+		cout << config.data_file_input << " ";
+		cout << "width " << circles.getWidth() << endl;
 		input.close();
 	}
 	if (config.cost_data_input_given) {
@@ -89,9 +91,10 @@ int main(int argc, char **argv)
 		recorder.recordInitial(cost_function.getCost(circles));
 	}
 
-	HeuristicSearcher<CircleImage> searcher(cost_function, heuristic,
-						neighbor_factory, recorder,
-						circles, best_circles);
+	HeuristicSearcher<CircleImage, CircleImageChangeDimension>
+		searcher(cost_function, heuristic,
+			 neighbor_factory, recorder,
+			 circles, best_circles);
 
 	cout << setiosflags(ios::fixed) << setprecision(2);
 	for (int i = 0; i < config.iterations; i++) {
